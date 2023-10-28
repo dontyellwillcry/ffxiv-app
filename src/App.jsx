@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import './App.css';
 const XIVAPI = require('@xivapi/js')
 const xiv = new XIVAPI({
@@ -9,15 +9,28 @@ const xiv = new XIVAPI({
 })
 
 
-
-
-
 function App() {
+
+  const [imageUrl, setImageUrl] = useState('');
+  let myItem;
+
+xiv.search("Shroud Cherry Sapling").then((response) => {
+  // do something with the response
+   myItem = response.results[0].icon
+   setImageUrl(myItem);
+  console.log(response);
+}).catch((error) => {
+  // do something with the error
+  console.log(error);
+})
+
   return (
     <div className="App">
       <header className="App-header">
-        
+
+      <img src={imageUrl}></img>
       </header>
+      
     </div>
   );
 }
