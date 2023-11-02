@@ -10,63 +10,71 @@ const xiv = new XIVAPI({
 
 function App() {
 
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState([]);
   let myItem;
   let myFc;
 
 
-// xiv.search("Shroud Cherry Sapling").then((response) => {
-//   // do something with the response
-//    myItem = response.results[0].name
-//   //  setImageUrl(myItem);
-//   console.log(response);
-// }).catch((error) => {
-//   // do something with the error
-//   console.log(error);
-// })
+  // xiv.search("Shroud Cherry Sapling").then((response) => {
+  //   // do something with the response
+  //    myItem = response.results[0].name
+  //   //  setImageUrl(myItem);
+  //   console.log(response);
+  // }).catch((error) => {
+  //   // do something with the error
+  //   console.log(error);
+  // })
 
-// xiv.freecompany.search('Pixel Pirate Academy', {server: 'Zalera'}).then((response) => {
-//   myFc = response.results[0].id
-//   setImageUrl(myFc);
-//   console.log(myFc);
+  // xiv.freecompany.search('Pixel Pirate Academy', {server: 'Zalera'}).then((response) => {
+  //   myFc = response.results[0].id
+  //   setImageUrl(myFc);
+  //   console.log(myFc);
 
 
-// }).catch((error) => {
-//   console.log(error)
-// })
+  // }).catch((error) => {
+  //   console.log(error)
+  // })
 
-// xiv.freecompany.get('9229142273877465895', {data: 'FCM'}).then((response) => {
-//   // myFc = response.results[0].id
-//   // setImageUrl(myFc);
-//   console.log(response);
+  // xiv.freecompany.get('9229142273877465895', {data: 'FCM'}).then((response) => {
+  //   // myFc = response.results[0].id
+  //   // setImageUrl(myFc);
+  //   console.log(response);
 
-// }).catch((error) => {
-//   console.log(error)
-// })
-async function fetchData() {
-  try {
-    const searchResponse = await xiv.freecompany.search('Pixel Pirate Academy', { server: 'Zalera' });
-    const myFc = searchResponse.results[0].id;
-    setImageUrl(myFc);
-    console.log(myFc);
+  // }).catch((error) => {
+  //   console.log(error)
+  // })
 
-    const getResponse = await xiv.freecompany.get(myFc, { data: 'FCM' });
-    console.log(getResponse);
-  } catch (error) {
-    console.error(error);
+  async function fetchData() {
+    try {
+      const searchResponse = await xiv.freecompany.search('Pixel Pirate Academy', { server: 'Zalera' });
+      const myFc = searchResponse.results[0].id;
+
+
+      const getResponse = await xiv.freecompany.get(myFc, { data: 'FCM' });
+      // console.log(getResponse.free_company_members);
+      setImageUrl(getResponse.free_company_members);
+
+    } catch (error) {
+      console.error(error);
+    }
   }
-}
+  console.log("Here is my FC", imageUrl)
 
-fetchData();
+  useEffect(() => {
+    fetchData();
+  }, []);
 
 
   return (
     <div className="App">
       <header className="App-header">
 
-      <p>{imageUrl}</p>
-      </header>
-      
+      {imageUrl.length > 0 ? (
+          <p>{imageUrl[0].name}</p>
+        ) : (
+          <p>Loading...</p>
+        )}      </header>
+
     </div>
   );
 }
