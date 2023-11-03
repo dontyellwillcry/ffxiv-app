@@ -16,28 +16,28 @@ function App() {
 
 
   // xiv.search("Shroud Cherry Sapling").then((response) => {
-  //   // do something with the response
+  //TODO    do something with the response
   //    myItem = response.results[0].name
-  //   //  setImageUrl(myItem);
+  //     setImageUrl(myItem);
   //   console.log(response);
   // }).catch((error) => {
-  //   // do something with the error
-  //   console.log(error);
+  //TODO   do something with the error
+  // ?  console.log(error);
   // })
 
   // xiv.freecompany.search('Pixel Pirate Academy', {server: 'Zalera'}).then((response) => {
   //   myFc = response.results[0].id
   //   setImageUrl(myFc);
-  //   console.log(myFc);
+  // !  console.log(myFc);
 
 
   // }).catch((error) => {
-  //   console.log(error)
+  ////   console.log(error)
   // })
 
   // xiv.freecompany.get('9229142273877465895', {data: 'FCM'}).then((response) => {
-  //   // myFc = response.results[0].id
-  //   // setImageUrl(myFc);
+  //    myFc = response.results[0].id
+  //    setImageUrl(myFc);
   //   console.log(response);
 
   // }).catch((error) => {
@@ -69,12 +69,19 @@ function App() {
     <div className="App">
       <header className="App-header">
 
-      {imageUrl.length > 0 ? (
+        {imageUrl.length > 0 ? (
           <p>{imageUrl[0].name}</p>
         ) : (
           <p>Loading...</p>
-        )}      </header>
 
+        )}
+        {imageUrl.length > 0 ? (
+          <img src={imageUrl[0].avatar}></img>
+        ) : (
+          <p>{null}</p>
+
+        )}
+      </header> 
     </div>
   );
 }
