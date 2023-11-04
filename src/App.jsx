@@ -16,9 +16,13 @@ function App() {
 
   const [imageUrl, setImageUrl] = useState([]);
   const [imagePoro, setImagePoro] = useState([]);
+  console.log("imageUrl:", imageUrl)
+  console.log("imagePoro:", imagePoro)
+
 
   let myItem;
   let myFc;
+  let myAvatar;
 
 
   // xiv.search("Shroud Cherry Sapling").then((response) => {
@@ -55,12 +59,12 @@ function App() {
       const searchResponse = await xiv.freecompany.search('Pixel Pirate Academy', { server: 'Zalera' });
 
       const myFc = searchResponse.results[0].id;
-      console.log("Here is the ID'S", searchResponse)
+      // console.log("Here is the ID'S", searchResponse)
 
 
       const getResponse = await xiv.freecompany.get(myFc, { data: 'FCM' });
       // console.log(getResponse.free_company_members);
-      console.log("List of all FC members", getResponse.free_company_members)
+      // console.log("List of all FC members", getResponse.free_company_members)
       //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
 
       setImageUrl(getResponse.free_company_members);
@@ -69,7 +73,7 @@ function App() {
       console.error(error);
     }
   }
-  console.log("Here is my FC", imageUrl)
+  // console.log("Here is my FC", imageUrl)
 
   useEffect(() => {
     fetchData();
@@ -80,6 +84,8 @@ function App() {
       // Handle the API response data here
       console.log('API Response:', response.data);
       //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
+      console.log('Portrait Response:', response.data.Character.Portrait);
+
       setImagePoro(response.data.Character.Portrait)
     })
     .catch((error) => {
@@ -90,45 +96,34 @@ function App() {
 
   return (
     <div className="App">
-    <div className="video-background">
-      <video source src={ffxivBg} type="video/mp4" autoPlay loop muted/>
-        
-      <header className="App-header">
-
-        {imageUrl.length > 0 ? (
-          <p>{imageUrl[0].name}</p>
-        ) : (
-          <p>Loading...</p>
-
-        )}
-        {imageUrl.length > 0 ? (
-          // <img className='card' src={imageUrl[0].avatar}></img>
-          <img className='card' src={imagePoro}></img>
-
-        ) : (
-          <p>{null}</p>
-
-        )}
-      </header>
+      <div className="video-background">
+        <video autoPlay loop muted>
+          <source src={ffxivBg} type="video/mp4" />
+        </video>
+        <header className="App-header">
+          {/* Header content */}
+        </header>
       </div>
+
       <div className="avatar-img">
-      {imageUrl.length > 0 ? (
-          <p>{imageUrl[0].name}</p>
+        {imageUrl.length > 0 ? (
+          <>
+            <p>{imageUrl[2].name}</p>
+            <img className='card' src={imagePoro} alt="Poro" />
+            <div className="centered-container">
+              <a href="https://www.fflogs.com/character/na/zalera/papa%20poro" target="_blank" rel="noopener noreferrer">
+                My fflogs
+              </a>
+            </div>
+          </>
         ) : (
           <p>Loading...</p>
-
         )}
-        {imageUrl.length > 0 ? (
-          // <img className='card' src={imageUrl[0].avatar}></img>
-          <img className='card' src={imagePoro}></img>
-
-        ) : (
-          <p>{null}</p>
-
-        )}
-        </div>
+      </div>
     </div>
   );
 }
+
+
 
 export default App;
