@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
+import ffxivBg from './assets/Background.mp4'
 const XIVAPI = require('@xivapi/js')
 const xiv = new XIVAPI({
   private_key: '3419471f8b0b44a4b43419980053b67ee01339430bed425a86260bf096f284e4',
@@ -52,7 +53,7 @@ function App() {
   async function fetchData() {
     try {
       const searchResponse = await xiv.freecompany.search('Pixel Pirate Academy', { server: 'Zalera' });
-      
+
       const myFc = searchResponse.results[0].id;
       console.log("Here is the ID'S", searchResponse)
 
@@ -60,6 +61,8 @@ function App() {
       const getResponse = await xiv.freecompany.get(myFc, { data: 'FCM' });
       // console.log(getResponse.free_company_members);
       console.log("List of all FC members", getResponse.free_company_members)
+      //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
+
       setImageUrl(getResponse.free_company_members);
 
     } catch (error) {
@@ -73,19 +76,23 @@ function App() {
   }, []);
 
   axios.get('https://xivapi.com/character/20542064')
-  .then((response) => {
-    // Handle the API response data here
-    console.log('API Response:', response.data);
-    setImagePoro(response.data.Character.Portrait)
-  })
-  .catch((error) => {
-    // Handle any errors that occur during the request
-    console.error('Error:', error);
-  });
+    .then((response) => {
+      // Handle the API response data here
+      console.log('API Response:', response.data);
+      //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
+      setImagePoro(response.data.Character.Portrait)
+    })
+    .catch((error) => {
+      // Handle any errors that occur during the request
+      console.error('Error:', error);
+    });
 
 
   return (
     <div className="App">
+    <div className="video-background">
+      <video source src={ffxivBg} type="video/mp4" autoPlay loop muted/>
+        
       <header className="App-header">
 
         {imageUrl.length > 0 ? (
@@ -103,6 +110,23 @@ function App() {
 
         )}
       </header>
+      </div>
+      <div className="avatar-img">
+      {imageUrl.length > 0 ? (
+          <p>{imageUrl[0].name}</p>
+        ) : (
+          <p>Loading...</p>
+
+        )}
+        {imageUrl.length > 0 ? (
+          // <img className='card' src={imageUrl[0].avatar}></img>
+          <img className='card' src={imagePoro}></img>
+
+        ) : (
+          <p>{null}</p>
+
+        )}
+        </div>
     </div>
   );
 }
