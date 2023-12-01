@@ -63,8 +63,6 @@ function App() {
 
 
       const getResponse = await xiv.freecompany.get(myFc, { data: 'FCM' });
-      // console.log(getResponse.free_company_members);
-      // console.log("List of all FC members", getResponse.free_company_members)
       //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
 
       setImageUrl(getResponse.free_company_members);
@@ -73,7 +71,6 @@ function App() {
       console.error(error);
     }
   }
-  // console.log("Here is my FC", imageUrl)
 
   useEffect(() => {
     fetchData();
@@ -96,6 +93,8 @@ function App() {
 
   return (
     <div className="App">
+      <>
+      </>
       <div className="video-background">
         <video autoPlay loop muted>
           <source src={ffxivBg} type="video/mp4" />
@@ -119,8 +118,11 @@ function App() {
         ) : (
           <p>Loading...</p>
         )}
+        
       </div>
-    </div>
+    
+    </div >
+    
   );
 }
 
