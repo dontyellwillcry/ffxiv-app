@@ -41,9 +41,9 @@ function App() {
   return (
     <div className="App">
       <div className="video-background">
-        <video autoPlay loop muted>
+        {/* <video autoPlay loop muted>
           <source src={ffxivBg} type="video/mp4" />
-        </video>
+        </video> */}
         <header className="App-header">
           {/* Header content */}
         </header>
