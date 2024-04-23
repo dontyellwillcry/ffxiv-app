@@ -3,8 +3,9 @@ import './App.css';
 import axios from 'axios';
 import ffxivBg from './assets/Background.mp4'
 const XIVAPI = require('@xivapi/js')
+
 const xiv = new XIVAPI({
-  private_key: '3419471f8b0b44a4b43419980053b67ee01339430bed425a86260bf096f284e4',
+  private_key: '19fe4dd5d15649d997a711149e6baca587d6a6fe45434c1facec13446c2f0d09',
   language: 'en',
   snake_case: true
 })
@@ -14,25 +15,23 @@ const xiv = new XIVAPI({
 
 function App() {
 
-  const [imageUrl, setImageUrl] = useState([]);
+  const [imageUrl, setImageUrl] = useState();
   const [imagePoro, setImagePoro] = useState([]);
-  console.log("imageUrl:", imageUrl)
-  console.log("imagePoro:", imagePoro)
+  // console.log("imageUrl:", imageUrl)
+  // console.log("imagePoro:", imagePoro)
 
 
-  let myItem;
-  let myFc;
-  let myAvatar;
+  // let myItem;
+  // let myFc;
+  // let myAvatar;
 
 
   // xiv.search("Shroud Cherry Sapling").then((response) => {
-  //TODO    do something with the response
-  //    myItem = response.results[0].name
-  //     setImageUrl(myItem);
-  //   console.log(response);
+  //   myItem = response.results[0].name;
+  //   setImageUrl(myItem);
+  //   console.log(myItem);
   // }).catch((error) => {
-  //TODO   do something with the error
-  // ?  console.log(error);
+  //   console.log(error);
   // })
 
   // xiv.freecompany.search('Pixel Pirate Academy', {server: 'Zalera'}).then((response) => {
@@ -54,47 +53,64 @@ function App() {
   //   console.log(error)
   // })
 
-  async function fetchData() {
-    try {
-      const searchResponse = await xiv.freecompany.search('Pixel Pirate Academy', { server: 'Zalera' });
+  // async function fetchData() {
+  //   try {
+  //     const searchResponse = await xiv.freecompany.search('Pixel Pirate Academy', { server: 'Zalera' });
+  //     console.log("searchResponse?", searchResponse)
 
-      const myFc = searchResponse.results[0].id;
-      // console.log("Here is the ID'S", searchResponse)
+  //     const myFc = searchResponse.results[0].id;
+  //     console.log("Here is the ID'S", searchResponse)
 
 
-      const getResponse = await xiv.freecompany.get(myFc, { data: 'FCM' });
-      //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
+  //     const getResponse = await xiv.freecompany.get(myFc, { data: 'FCM' });
+  //     //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
 
-      setImageUrl(getResponse.free_company_members);
+  //     setImageUrl(getResponse.free_company_members);
 
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  //   } catch (error) {
+  //     console.error('Error in fetchData', error);
+  //   }
+  // }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  axios.get('https://xivapi.com/character/20542064')
+  // axios.get('https://pokeapi.co/api/v2/pokemon/clefairy/')
+  //   .then((response) => {
+  //     // Handle the API response data here
+  //     console.log('API Response:', response.data);
+  //     //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
+  //     console.log('Portrait Response:', response.data.Character.Portrait);
+
+  //     setImagePoro(response.data.Character.Portrait)
+  //   })
+  //   .catch((error) => {
+  //     // Handle any errors that occur during the request
+  //     console.error('Error on line 80:', error);
+  //   });
+
+  // Gets all info on whatever pokemon specified, I have this pointed to the image
+  axios.get('https://pokeapi.co/api/v2/pokemon/clefairy/')
     .then((response) => {
       // Handle the API response data here
-      console.log('API Response:', response.data);
+      console.log('API Response:', response.data.sprites.front_default);
       //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
-      console.log('Portrait Response:', response.data.Character.Portrait);
+      console.log('Portrait Response:', response.data.sprites.front_default);
 
-      setImagePoro(response.data.Character.Portrait)
+      const imageUrl = response.data.sprites.front_default;
+      console.log('API Response:', imageUrl);
+
+      // Update the state with the image URL
+      setImageUrl(imageUrl);
     })
     .catch((error) => {
       // Handle any errors that occur during the request
-      console.error('Error:', error);
+      console.error('Error on line 80:', error);
     });
-
 
   return (
     <div className="App">
-      <>
-      </>
       <div className="video-background">
         <video autoPlay loop muted>
           <source src={ffxivBg} type="video/mp4" />
@@ -103,8 +119,7 @@ function App() {
           {/* Header content */}
         </header>
       </div>
-
-      <div className="avatar-img">
+      {/* <div className="avatar-img">
         {imageUrl.length > 0 ? (
           <>
             <p>{imageUrl[2].name}</p>
@@ -117,12 +132,14 @@ function App() {
           </>
         ) : (
           <p>Loading...</p>
+          
         )}
-        
+      </div> */}
+      <div>
+      <img className='card' src={imageUrl} alt="Poro" />
       </div>
-    
     </div >
-    
+
   );
 }
 
