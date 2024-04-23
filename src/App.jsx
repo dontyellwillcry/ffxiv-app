@@ -14,18 +14,15 @@ function App() {
   });
   const [description1, setDescription1] = useState({ description1: "" });
   const [description2, setDescription2] = useState({ description2: "" });
-
-
   const [pokemonName, setPokemonName] = useState('');
 
-  // let pokemonInfo;
 
 
   const fetchPokemon = (event) => {
     setDescription2("");
     setDescription1("");
     event.preventDefault(); // Prevent form submission from reloading the page
-    axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/`)
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}/`)
       .then((response) => {
         // Handle the first API response data here
         console.log('API Response:', response.data);
@@ -39,15 +36,10 @@ function App() {
         });
       })
       .catch((error) => {
-        // Handle any errors that occur during the first API request
         console.error('Error:', error);
       });
   };
 
-
-  // useEffect(() => {
-  //   fetchAbilities(); 
-  // }, [pokemonInfo]);
 
   const fetchAbilities = () => {
 
@@ -58,25 +50,20 @@ function App() {
     // Make API call for ability1
     axios.get(ability1Url)
       .then((response) => {
-        // Handle the response for ability1
         console.log('Ability1 Response:', response.data.effect_entries[1].effect);
         setDescription1({ description1: response.data.effect_entries[1].effect });
       })
       .catch((error) => {
-        // Handle errors for ability1
         console.error('Error fetching ability1:', error);
       });
 
-    // Make API call for ability2
     axios.get(ability2Url)
       .then((response) => {
-        // Handle the response for ability2
         console.log('Ability2 Response:', response.data.effect_entries[1].effect);
         setDescription2({ description2: response.data.effect_entries[1].effect });
 
       })
       .catch((error) => {
-        // Handle errors for ability2
         console.error('Error fetching ability2:', error);
       });
   };
@@ -94,13 +81,12 @@ function App() {
   }
 
   const handleInputChange = (event) => {
-    // Update the state with the input value as it changes
     setPokemonName(event.target.value);
   };
 
   return (
     <div className="container">
-      <p>POKEMON:{pokemonName}</p>
+      <p className='yourPokemon'>{pokemonInfo.name}</p>
       <div className='topDiv'>
         {pokemonInfo.name ? (
           <div className='card' onClick={closeCard}>
@@ -109,7 +95,7 @@ function App() {
             <p className='desc'>{description1.description1}</p>
             <p className='ability'>Ability Two: <span className='abilityName'>{pokemonInfo.ability2}</span></p>
             <p className='desc'>{description2.description2}</p>
-            <button onClick={fetchAbilities}>Show details</button>
+            <button className="custom-button" onClick={(event) => { event.stopPropagation(); fetchAbilities(); }}>Show details</button>
           </div>
         ) : (
           <p>No info to display</p>
@@ -118,12 +104,13 @@ function App() {
       <div className="bottomDiv">
         <form className="formDiv" onSubmit={fetchPokemon}>
           <input
+            className="custom-input"
             name='pokemon'
             placeholder='Choose your Pokemon'
             value={pokemonName}
             onChange={handleInputChange}
           />
-          <button>
+          <button className="custom-button">
             Choose!
           </button>
         </form>
