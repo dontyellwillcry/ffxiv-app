@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
-import ffxivBg from './assets/Background.mp4'
-const XIVAPI = require('@xivapi/js')
+// const XIVAPI = require('@xivapi/js')
 
-const xiv = new XIVAPI({
-  private_key: '19fe4dd5d15649d997a711149e6baca587d6a6fe45434c1facec13446c2f0d09',
-  language: 'en',
-  snake_case: true
-})
+// const xiv = new XIVAPI({
+//   private_key: '19fe4dd5d15649d997a711149e6baca587d6a6fe45434c1facec13446c2f0d09',
+//   language: 'en',
+//   snake_case: true
+// })
 
 
 
