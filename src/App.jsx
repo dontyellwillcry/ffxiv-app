@@ -22,6 +22,8 @@ function App() {
 
 
   const fetchPokemon = (event) => {
+    setDescription2("");
+    setDescription1("");
     event.preventDefault(); // Prevent form submission from reloading the page
     axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/`)
       .then((response) => {
@@ -48,6 +50,7 @@ function App() {
   // }, [pokemonInfo]);
 
   const fetchAbilities = () => {
+
     // Make API calls for ability1 and ability2
     const ability1Url = `https://pokeapi.co/api/v2/ability/${pokemonInfo.ability1}`;
     const ability2Url = `https://pokeapi.co/api/v2/ability/${pokemonInfo.ability2}`;
