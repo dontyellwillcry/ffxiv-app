@@ -12,10 +12,10 @@ function App() {
     ability2: "",
     ability3: "",
   });
-  const [description1, setDescription1] = useState({description1: ""});
-  const [description2, setDescription2] = useState({description2: ""});
+  const [description1, setDescription1] = useState({ description1: "" });
+  const [description2, setDescription2] = useState({ description2: "" });
 
- 
+
   const [pokemonName, setPokemonName] = useState('');
 
   // let pokemonInfo;
@@ -60,7 +60,7 @@ function App() {
       .then((response) => {
         // Handle the response for ability1
         console.log('Ability1 Response:', response.data.effect_entries[1].effect);
-        setDescription1({description1: response.data.effect_entries[1].effect});
+        setDescription1({ description1: response.data.effect_entries[1].effect });
       })
       .catch((error) => {
         // Handle errors for ability1
@@ -72,7 +72,7 @@ function App() {
       .then((response) => {
         // Handle the response for ability2
         console.log('Ability2 Response:', response.data.effect_entries[1].effect);
-        setDescription2({description2: response.data.effect_entries[1].effect});
+        setDescription2({ description2: response.data.effect_entries[1].effect });
 
       })
       .catch((error) => {
@@ -82,7 +82,16 @@ function App() {
   };
 
 
-
+  const closeCard = () => {
+    setPokemonInfo({
+      name: "",
+      image: "",
+      ability1: "",
+      ability2: "",
+      ability3: "",
+    })
+    setPokemonName('')
+  }
 
   const handleInputChange = (event) => {
     // Update the state with the input value as it changes
@@ -91,20 +100,20 @@ function App() {
 
   return (
     <div className="container">
+      <p>POKEMON:{pokemonName}</p>
       <div className='topDiv'>
-        <div className='card'>
-        {pokemonInfo && (
-          <img className='image' src={pokemonInfo.image} alt="POKEMON" />
-
+        {pokemonInfo.name ? (
+          <div className='card' onClick={closeCard}>
+            <img className='image' src={pokemonInfo.image} alt="POKEMON" />
+            <p className='ability'>Ability One: <span className='abilityName'>{pokemonInfo.ability1}</span></p>
+            <p className='desc'>{description1.description1}</p>
+            <p className='ability'>Ability Two: <span className='abilityName'>{pokemonInfo.ability2}</span></p>
+            <p className='desc'>{description2.description2}</p>
+            <button onClick={fetchAbilities}>Show details</button>
+          </div>
+        ) : (
+          <p>No info to display</p>
         )}
-        <p>Ability One:{pokemonInfo.ability1}</p>
-        <p>{description1.description1}</p>
-        <p>Ability Two:{pokemonInfo.ability2}</p>
-        <p>{description2.description2}</p>
-        <button onClick={fetchAbilities}>Show details</button>
-
-        <p>POKEMON:{pokemonName}</p>
-        </div>
       </div>
       <div className="bottomDiv">
         <form className="formDiv" onSubmit={fetchPokemon}>
