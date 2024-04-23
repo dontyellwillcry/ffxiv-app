@@ -1,59 +1,166 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
-// const XIVAPI = require('@xivapi/js')
-
-// const xiv = new XIVAPI({
-//   private_key: '19fe4dd5d15649d997a711149e6baca587d6a6fe45434c1facec13446c2f0d09',
-//   language: 'en',
-//   snake_case: true
-// })
-
-
 
 
 function App() {
 
-  const [imageUrl, setImageUrl] = useState();
-  const [imagePoro, setImagePoro] = useState([]);
+  const [pokemonInfo, setPokemonInfo] = useState({
+    name: "",
+    image: "",
+    ability1: "",
+    ability2: "",
+    ability3: "",
+  });
+  const [description1, setDescription1] = useState({description1: ""});
+  const [description2, setDescription2] = useState({description2: ""});
+
  
+  const [pokemonName, setPokemonName] = useState('');
 
-  // Gets all info on whatever pokemon specified, I have this pointed to the image
-  axios.get('https://pokeapi.co/api/v2/pokemon/clefairy/')
-    .then((response) => {
-      // Handle the API response data here
-      console.log('API Response:', response.data.sprites.front_default);
-      //! Change the response.data info from state to either a reducer or a varibale. State is not really appropriate for this
-      console.log('Portrait Response:', response.data.sprites.front_default);
+  // let pokemonInfo;
 
-      const imageUrl = response.data.sprites.front_default;
-      console.log('API Response:', imageUrl);
 
-      // Update the state with the image URL
-      setImageUrl(imageUrl);
-    })
-    .catch((error) => {
-      // Handle any errors that occur during the request
-      console.error('Error on line 80:', error);
-    });
+  const fetchPokemon = (event) => {
+    event.preventDefault(); // Prevent form submission from reloading the page
+    axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}/`)
+      .then((response) => {
+        // Handle the first API response data here
+        console.log('API Response:', response.data);
+        // Update the state with the first API response data
+        setPokemonInfo({
+          name: response.data.name,
+          image: response.data.sprites.front_default,
+          ability1: response.data.abilities[0].ability.name,
+          ability2: response.data.abilities[1] ? response.data.abilities[1].ability.name : "", // Check if ability2 exists
+          ability3: response.data.abilities[2] ? response.data.abilities[2].ability.name : "", // Check if ability3 exists
+        });
+      })
+      .catch((error) => {
+        // Handle any errors that occur during the first API request
+        console.error('Error:', error);
+      });
+  };
+
+
+  // useEffect(() => {
+  //   fetchAbilities(); 
+  // }, [pokemonInfo]);
+
+  const fetchAbilities = () => {
+    // Make API calls for ability1 and ability2
+    const ability1Url = `https://pokeapi.co/api/v2/ability/${pokemonInfo.ability1}`;
+    const ability2Url = `https://pokeapi.co/api/v2/ability/${pokemonInfo.ability2}`;
+
+    // Make API call for ability1
+    axios.get(ability1Url)
+      .then((response) => {
+        // Handle the response for ability1
+        console.log('Ability1 Response:', response.data.effect_entries[1].effect);
+        setDescription1({description1: response.data.effect_entries[1].effect});
+      })
+      .catch((error) => {
+        // Handle errors for ability1
+        console.error('Error fetching ability1:', error);
+      });
+
+    // Make API call for ability2
+    axios.get(ability2Url)
+      .then((response) => {
+        // Handle the response for ability2
+        console.log('Ability2 Response:', response.data.effect_entries[1].effect);
+        setDescription2({description2: response.data.effect_entries[1].effect});
+
+      })
+      .catch((error) => {
+        // Handle errors for ability2
+        console.error('Error fetching ability2:', error);
+      });
+  };
+
+
+
+
+  const handleInputChange = (event) => {
+    // Update the state with the input value as it changes
+    setPokemonName(event.target.value);
+  };
 
   return (
     <div className="App">
       <div className="video-background">
-        {/* <video autoPlay loop muted>
-          <source src={ffxivBg} type="video/mp4" />
-        </video> */}
         <header className="App-header">
           {/* Header content */}
         </header>
       </div>
       <div>
-      <img className='card' src={imageUrl} alt="Poro" />
+        {pokemonInfo && (
+          <img className='pokemon-image' src={pokemonInfo.image} alt="POKEMON" />
+
+        )}
+        <p>Ability One:{pokemonInfo.ability1}</p>
+        <p>{description1.description1}</p>
+        <p>Ability Two:{pokemonInfo.ability2}</p>
+        <p>{description2.description2}</p>
+        <button onClick={fetchAbilities}>Show details</button>
+
+        <p>POKEMON:{pokemonName}</p>
+      </div>
+      <div className="formDiv">
+        <form onSubmit={fetchPokemon}>
+          <input
+            name='pokemon'
+            placeholder='Choose your Pokemon'
+            value={pokemonName}
+            onChange={handleInputChange}
+          />
+          <button>
+            Choose!
+          </button>
+        </form>
       </div>
     </div >
 
   );
 }
+
+// Perform the second API call inside the first API call's then block
+// axios.get(`https://pokeapi.co/api/v2/ability/${response.data.abilities[0].ability.name}/`)
+//   .then((abilityResponse) => {
+//     // Handle the second API response data here
+//     setPokemonInfo({
+//       description1: abilityResponse.data.effect_entries[1].effect
+//     });
+//     console.log('API Ability1:', abilityResponse.data.effect_entries[1].effect);
+//   })
+//   .catch((error) => {
+//     // Handle any errors that occur during the second API request
+//     console.error('Error:', error);
+//   });
+// axios.get(`https://pokeapi.co/api/v2/ability/${response.data.abilities[1].ability.name}/`)
+//   .then((abilityResponse) => {
+//     // Handle the second API response data here
+//     setPokemonInfo({
+//       description2: abilityResponse.data.effect_entries[1].effect
+//     });
+//     console.log('API Ability2:', abilityResponse.data.effect_entries[1].effect);
+//   })
+//   .catch((error) => {
+//     // Handle any errors that occur during the second API request
+//     console.error('Error:', error);
+//   });
+// axios.get(`https://pokeapi.co/api/v2/ability/${response.data.abilities[2].ability.name}/`)
+//   .then((abilityResponse) => {
+//     // Handle the second API response data here
+//     setPokemonInfo({
+//       description3: abilityResponse.data
+//     });
+//     console.log('API Ability3:', abilityResponse.data);
+//   })
+//   .catch((error) => {
+//     // Handle any errors that occur during the second API request
+//     console.error('Error:', error);
+//   });
 
 
 
