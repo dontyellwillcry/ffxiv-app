@@ -90,15 +90,11 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div className="video-background">
-        <header className="App-header">
-          {/* Header content */}
-        </header>
-      </div>
-      <div>
+    <div className="container">
+      <div className='topDiv'>
+        <div className='card'>
         {pokemonInfo && (
-          <img className='pokemon-image' src={pokemonInfo.image} alt="POKEMON" />
+          <img className='image' src={pokemonInfo.image} alt="POKEMON" />
 
         )}
         <p>Ability One:{pokemonInfo.ability1}</p>
@@ -108,9 +104,10 @@ function App() {
         <button onClick={fetchAbilities}>Show details</button>
 
         <p>POKEMON:{pokemonName}</p>
+        </div>
       </div>
-      <div className="formDiv">
-        <form onSubmit={fetchPokemon}>
+      <div className="bottomDiv">
+        <form className="formDiv" onSubmit={fetchPokemon}>
           <input
             name='pokemon'
             placeholder='Choose your Pokemon'
@@ -127,43 +124,6 @@ function App() {
   );
 }
 
-// Perform the second API call inside the first API call's then block
-// axios.get(`https://pokeapi.co/api/v2/ability/${response.data.abilities[0].ability.name}/`)
-//   .then((abilityResponse) => {
-//     // Handle the second API response data here
-//     setPokemonInfo({
-//       description1: abilityResponse.data.effect_entries[1].effect
-//     });
-//     console.log('API Ability1:', abilityResponse.data.effect_entries[1].effect);
-//   })
-//   .catch((error) => {
-//     // Handle any errors that occur during the second API request
-//     console.error('Error:', error);
-//   });
-// axios.get(`https://pokeapi.co/api/v2/ability/${response.data.abilities[1].ability.name}/`)
-//   .then((abilityResponse) => {
-//     // Handle the second API response data here
-//     setPokemonInfo({
-//       description2: abilityResponse.data.effect_entries[1].effect
-//     });
-//     console.log('API Ability2:', abilityResponse.data.effect_entries[1].effect);
-//   })
-//   .catch((error) => {
-//     // Handle any errors that occur during the second API request
-//     console.error('Error:', error);
-//   });
-// axios.get(`https://pokeapi.co/api/v2/ability/${response.data.abilities[2].ability.name}/`)
-//   .then((abilityResponse) => {
-//     // Handle the second API response data here
-//     setPokemonInfo({
-//       description3: abilityResponse.data
-//     });
-//     console.log('API Ability3:', abilityResponse.data);
-//   })
-//   .catch((error) => {
-//     // Handle any errors that occur during the second API request
-//     console.error('Error:', error);
-//   });
 
 
 
