@@ -15,6 +15,8 @@ function App() {
   const [description1, setDescription1] = useState({ description1: "" });
   const [description2, setDescription2] = useState({ description2: "" });
   const [pokemonName, setPokemonName] = useState('');
+  const [toggle, setToggle] = useState(true);
+  console.log(toggle);
 
 
 
@@ -40,7 +42,7 @@ function App() {
       });
   };
 
-
+  //
   const fetchAbilities = () => {
 
     // Make API calls for ability1 and ability2
@@ -89,13 +91,13 @@ function App() {
       <p className='yourPokemon'>{pokemonInfo.name}</p>
       <div className='topDiv'>
         {pokemonInfo.name ? (
-          <div className='card' onClick={closeCard}>
+          <div className='card' onClick={() => { closeCard(); setToggle(true); }}>
             <img className='image' src={pokemonInfo.image} alt="POKEMON" />
             <p className='ability'>Ability One: <span className='abilityName'>{pokemonInfo.ability1}</span></p>
             <p className='desc'>{description1.description1}</p>
             <p className='ability'>Ability Two: <span className='abilityName'>{pokemonInfo.ability2}</span></p>
             <p className='desc'>{description2.description2}</p>
-            <button className="custom-button" onClick={(event) => { event.stopPropagation(); fetchAbilities(); }}>Show details</button>
+            {toggle ? (<button className="custom-button" onClick={(event) => { event.stopPropagation(); fetchAbilities(); setToggle(!toggle); }}>Show details</button>) : (<p></p>)}
           </div>
         ) : (
           <p>No info to display</p>
