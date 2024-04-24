@@ -19,7 +19,7 @@ function App() {
   console.log(toggle);
 
 
-
+  // API call for pokemon by name. I'm using: name, sprites.front_default(image), and ability names (descriptions not included see below)
   const fetchPokemon = (event) => {
     setDescription2("");
     setDescription1("");
@@ -42,7 +42,7 @@ function App() {
       });
   };
 
-  //
+  // API call to ability endpoint since descriptions are not included in the above API call
   const fetchAbilities = () => {
 
     // Make API calls for ability1 and ability2
